@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.farm.dao.DeviceDao">
+
+	<resultMap id="frameMap" type="com.farm.entity.ControlFrame">
+		<id column="id" property="id"></id>
+		<result column="writecode1" property="code1"></result>
+		<result column="writecode0" property="code0"></result>
+	</resultMap>
+
+	<select id="findFrameById" resultMap="frameMap">
+		SELECT * FROM control_frame WHERE id = #{frameId}
+	</select>
+
+
+</mapper>

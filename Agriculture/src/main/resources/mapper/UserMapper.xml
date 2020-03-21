@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.farm.dao.UserDao">
+	<!--这里设置了别名有问题，所以写了全路径，再研究-->
+	<resultMap id="userMap" type="com.farm.entity.User">
+		<id column="user_id" property="id"></id>
+		<result column="username" property="username"></result>
+		<result column="user_pwd" property="password"></result>
+	</resultMap>
+
+	<select id="queryUser" resultMap="userMap">
+		select * from tb_user where username=#{username} and user_pwd = #{password}
+	</select>
+
+
+</mapper>

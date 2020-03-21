@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.farm.dao.PacketDao">
+
+	<resultMap id="airMap" type="com.farm.entity.data.AirPacket">
+		<id column="id" property="airPacketId"></id>
+		<result column="loraNode_id" property="loraNodeId"></result>
+		<result column="device_id" property="deviceId"></result>
+		<result column="data_type" property="dataType"></result>
+		<result column="airTemp" property="airTemp"></result>
+		<result column="airHumi" property="airHumidity"></result>
+		<result column="commit_time" property="commitTime"></result>
+	</resultMap>
+
+	<resultMap id="co2Map" type="com.farm.entity.data.CO2Packet">
+		<id column="id" property="CO2PacketId"></id>
+		<result column="loraNode_id" property="loraNodeId"></result>
+		<result column="device_id" property="deviceId"></result>
+		<result column="data_type" property="dataType"></result>
+		<result column="concn" property="concentration"></result>
+		<result column="commit_time" property="commitTime"></result>
+	</resultMap>
+
+	<resultMap id="soilMap" type="com.farm.entity.data.SoilPacket">
+		<id column="id" property="soilPacketId"></id>
+		<result column="loraNode_id" property="loraNodeId"></result>
+		<result column="device_id" property="deviceId"></result>
+		<result column="data_type" property="dataType"></result>
+		<result column="soilTemp" property="soilTemp"></result>
+		<result column="soilHumi" property="soilHumidity"></result>
+		<result column="commit_time" property="commitTime"></result>
+	</resultMap>
+
+	<resultMap id="sunlightMap" type="com.farm.entity.data.SunlightPacket">
+		<id column="id" property="sunlightPacketId"></id>
+		<result column="loraNode_id" property="loraNodeId"></result>
+		<result column="device_id" property="deviceId"></result>
+		<result column="data_type" property="dataType"></result>
+		<result column="intensity" property="intensity"></result>
+		<result column="commit_time" property="commitTime"></result>
+	</resultMap>
+
+	<resultMap id="waterMap" type="com.farm.entity.data.WaterPacket">
+		<id column="id" property="waterPacketId"></id>
+		<result column="loraNode_id" property="loraNodeId"></result>
+		<result column="device_id" property="deviceId"></result>
+		<result column="data_type" property="dataType"></result>
+		<result column="waterTemp" property="waterTemp"></result>
+		<result column="commit_time" property="commitTime"></result>
+	</resultMap>
+
+	<resultMap id="weatherMap" type="com.farm.entity.data.WeatherPacket">
+		<id column="id" property="weatherPacketId"></id>
+		<result column="device_id" property="deviceId"></result>
+		<result column="weatherHumidity" property="weatherHumidity"></result>
+		<result column="weatherTemp" property="weatherTemp"></result>
+		<result column="weatherIntensity" property="weatherIntensity"></result>
+		<result column="EC" property="ECValue"></result>
+		<result column="windSpeed" property="windSpeed"></result>
+		<result column="rainOrSnow" property="rainOrSnow"></result>
+		<result column="commit_time" property="commitTime"></result>
+	</resultMap>
+
+
+	<insert id="insertAirPacket" parameterType="com.farm.entity.data.AirPacket">
+		INSERT INTO
+		air_record(loraNode_id, device_id, data_type, airTemp, airHumi, commit_time)
+		VALUES (
+			#{packet.loraNodeId},#{packet.deviceId},#{packet.dataType},
+			#{packet.airTemp},#{packet.airHumidity},#{packet.commitTime}
+		)
+	</insert>
+	<insert id="insertSoilPacket" parameterType="com.farm.entity.data.SoilPacket">
+		INSERT INTO
+		soil_record(loraNode_id, device_id, data_type, soilTemp, soilHumi, commit_time)
+		VALUES (
+			#{packet.loraNodeId},#{packet.deviceId},#{packet.dataType},
+			#{packet.soilTemp},#{packet.soilHumidity},#{packet.commitTime}
+		)
+	</insert>
+	<insert id="insertSunlightPacket" parameterType="com.farm.entity.data.SunlightPacket">
+		INSERT INTO
+		sunlight_record(loraNode_id, device_id, data_type, intensity, commit_time)
+		VALUES (
+			#{packet.loraNodeId},#{packet.deviceId},#{packet.dataType},
+			#{packet.intensity},#{packet.commitTime}
+		)
+	</insert>
+	<insert id="insertCo2Packet" parameterType="com.farm.entity.data.CO2Packet">
+		INSERT INTO
+		co2_record(loraNode_id, device_id, data_type, concn, commit_time)
+		VALUES (
+			#{packet.loraNodeId},#{packet.deviceId},#{packet.dataType},
+			#{packet.concentration},#{packet.commitTime}
+		)
+	</insert>
+	<insert id="insertWaterPacket" parameterType="com.farm.entity.data.WaterPacket">
+		INSERT INTO
+		water_record(loraNode_id, device_id, data_type, waterTemp, commit_time)
+		VALUES (
+	  		#{packet.loraNodeId},#{packet.deviceId},#{packet.dataType},
+			#{packet.waterTemp},#{packet.commitTime}
+		)
+	</insert>
+	<insert id="insertWeatherPacket" parameterType="com.farm.entity.data.WeatherPacket">
+		INSERT INTO
+		weather_record(device_id,weatherHumidity,weatherTemp,weatherIntensity,EC,windSpeed,rainOrSnow,commit_time)
+		VALUES (
+			#{packet.deviceId},#{packet.weatherHumidity},#{packet.weatherTemp},#{packet.weatherIntensity},
+			#{packet.ECValue},#{packet.windSpeed},#{packet.rainOrSnow},#{packet.commitTime}
+		)
+	</insert>
+
+
+	<!--select * from `air_record` where loraNode_id = '0001' order by id desc  limit 1;-->
+	<select id="getLatestAirPacketById" resultMap="airMap">
+		SELECT * FROM `air_record`
+		where device_id = #{deviceId}
+		ORDER BY id DESC LIMIT 1
+	</select>
+	<select id="getLatestSoilPacketById" resultMap="soilMap">
+		SELECT * FROM `soil_record`
+		where device_id = #{deviceId}
+		ORDER BY id DESC LIMIT 1
+	</select>
+	<select id="getLatestSunlightPacketById" resultMap="sunlightMap">
+		SELECT * FROM `sunlight_record`
+		where device_id = #{deviceId}
+		ORDER BY id DESC LIMIT 1
+	</select>
+	<select id="getLatestCo2PacketById" resultMap="co2Map">
+		SELECT * FROM `co2_record`
+		where device_id = #{deviceId}
+		ORDER BY id DESC LIMIT 1
+
+	</select>
+	<select id="getLatestWaterPacketById" resultMap="waterMap">
+		SELECT * FROM `water_record`
+		where device_id = #{deviceId}
+		ORDER BY id DESC LIMIT 1
+	</select>
+
+	<select id="getLatestWeatherPacketById" resultMap="weatherMap">
+		SELECT * FROM `weather_record`
+		where device_id = #{deviceId}
+		ORDER BY id DESC LIMIT 1
+	</select>
+
+</mapper>
